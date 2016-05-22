@@ -3,18 +3,22 @@ var score2 = $('#score2');
 var score3 = $('#score3');
 var score4 = $('#score4');
 var score5 = $('#score5');
+var message = $('.message');
+var messageDiv = $('.messageDiv');
+
 var roundwin;
 var roundloss;
 var aiResult;
 var round;
 
 
+
 var currentRound = 1;
 var choice;
 
 var draw = function() {
-    $('.message').html("Draw!");
-    $('.messageDiv').attr('style', 'display: inherit');
+    message.html("Draw!");
+    messageDiv.attr('style', 'display: inherit');
     $('.whole').attr('style', 'display: none');
     round.removeClass("btn-link");
     round.addClass("btn-default");
@@ -105,7 +109,7 @@ var newGame = function () {
     currentRound = 1;
 };
 
-
+/*
 var chooseRock = function () {
     $('#youImg').attr('src', '../img/Rockleft.png');
     $('#yourChoice').attr('style', 'visibility: inherit');
@@ -114,7 +118,7 @@ var chooseRock = function () {
 
 var choosePaper = function () {
     $('#youImg').attr('src', '../img/Paperleft.png');
-    $('#yourChoice').attr('style', 'visibility: inherit');
+    $('#yourChoice');
     choice = "Paper"
 };
 
@@ -123,6 +127,17 @@ var chooseScissors = function () {
     $('#yourChoice').attr('style', 'visibility: inherit');
     choice = "Scissors"
 };
+*/
+
+
+$(function() {
+    $('.choiceButtons').on('click', function () {
+        console.log('click');
+        choice = $(this).data('choice');
+        $('youImg').attr('src', $(this).data('path'));
+        $('#youImg').attr('style', 'visibility: inherit');
+    });
+});
 
 var thinking = function() {
    $('#thinking').attr('style', 'display: inherit');
@@ -184,20 +199,20 @@ var getRound = function() {
 };
 
 var win = function () {
-    $('.message').html("You Won");
-    $('.messageDiv').attr('style', 'display: inherit');
+    message.html("You Won");
+    messageDiv.attr('style', 'display: inherit');
     $('.whole').attr('style', 'display: none');
 };
 
 var lose = function () {
-    $('.message').html("You Lost");
-    $('.messageDiv').attr('style', 'display: inherit');
+    message.html("You Lost");
+    messageDiv.attr('style', 'display: inherit');
     $('.whole').attr('style', 'display: none');
 };
 
 var nextRound = function () {
     $('.whole').attr('style', 'display: inherit');
-    $('.messageDiv').attr('style', 'display: none');
+    messageDiv.attr('style', 'display: none');
     $('#spinner').attr('style', 'display: none');
 
     currentRound = currentRound + 1;
