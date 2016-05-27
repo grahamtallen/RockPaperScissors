@@ -130,14 +130,16 @@ var chooseScissors = function () {
 */
 
 
+
 $(function() {
     $('.choiceButtons').on('click', function () {
-        console.log('click');
         choice = $(this).data('choice');
         $('youImg').attr('src', $(this).data('path'));
         $('#youImg').attr('style', 'visibility: inherit');
     });
 });
+
+
 
 var thinking = function() {
    $('#thinking').attr('style', 'display: inherit');
@@ -145,34 +147,31 @@ var thinking = function() {
 
 var compChoose = function() {
     $('#thinking').attr('style', 'display: none');
-    var aiChoose = Math.floor(Math.random() * 6) + 1;
+    var aiChoose = "Paper";
+        // Math.floor(Math.random() * 6) + 1;
     switch (aiChoose) {
         case 1:
-            aiResult = "Rock";
-            $('#aiImg').attr('src', '../img/Rockright.png');
+            makeAIChoice("Rock", '../img/Rockright.png');
             break;
         case 2:
-            aiResult = "Rock";
-            $('#aiImg').attr('src', '../img/Rockright.png');
+            makeAIChoice("Rock", '../img/Rockright.png');
             break;
-        case 3:
-            aiResult = "Paper";
-            $('#aiImg').attr('src', '../img/Paperright.png');
-            break;
-        case 4:
-            aiResult = "Paper";
-            $('#aiImg').attr('src', '../img/Paperright.png');
+        case 3, 4:
+            makeAIChoice("Paper", '../img/Paperright.png');
             break;
         case 5:
-            aiResult = "Scissors";
-            $('#aiImg').attr('src', '../img/Scissorsright.png');
+            makeAIChoice("Scissors", '../img/Scissorsright.png');
             break;
         case 6:
-            aiResult = "Scissors";
-            $('#aiImg').attr('src', '../img/Scissorsright.png');
+            makeAIChoice("Scissors", '../img/Scissorsright.png');
             break;
     }
 };
+
+function makeAIChoice(result, src) {
+    aiResult = result;
+    $('#aiImg').attr('src', src);
+}
 
 var getRound = function() {
     if (currentRound === 1) {
