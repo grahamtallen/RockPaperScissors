@@ -27,91 +27,13 @@ var rpsObj = {
     }
 };
 
-var doBattle = function() {
-    if (choice === aiResult) {
-        draw();
-    } else if (rpsObj[choice].beats === aiResult) {
-        roundwin();
-    } else {
-        roundloss();
-    }
-};
-
-
-var draw = function() {
-    if (currentRound === 5) {
-        gameOverDraw();
-    } else {
-        message.html("Draw!");
-        messageDiv.attr('style', 'display: inherit');
-        $('.whole').attr('style', 'display: none');
-        round.removeClass("btn-link");
-        round.addClass("btn-default");
-    }
-};
-var gameOverDraw = function () {
-    $('.whole').attr('style', 'display: none');
-    round.removeClass("btn-link");
-    round.addClass("btn-default");
-    gameOver();
-};
 
 var battle = function() {
     thinking();
-
     getRound();
-
-    /*
-    function doBattle() {
-        switch (choice) {
-            case "Rock":
-                if (aiResult === "Scissors") {
-                    roundwin();
-                } else if (aiResult === "Paper") {
-                    roundloss();
-                } else {
-                    if (currentRound === 5) {
-                        gameOverDraw();
-                    } else {
-                        draw();
-                    }
-                }
-                break;
-            case "Paper":
-                if (aiResult === "Scissors") {
-                    roundloss();
-                } else if (aiResult === "Paper") {
-                    if (currentRound === 5) {
-                        gameOverDraw();
-                    } else {
-                        draw();
-                    }
-                } else {
-                    roundwin();
-                }
-                break;
-            case "Scissors":
-                if (aiResult === "Scissors") {
-                    if (currentRound === 5) {
-                        gameOverDraw();
-                    } else {
-                        draw();
-                    }
-                } else if (aiResult === "Paper") {
-                    roundwin();
-                } else {
-                    roundloss();
-                }
-                break;
-        }
-    }
-    */
     setTimeout(compChoose, 2000);
     setTimeout(loading, 2000);
     setTimeout(doBattle, 4000);
-
-
-
 };
 
 var getRound = function() {
@@ -144,42 +66,119 @@ var getRound = function() {
 
 };
 
-var score5Win = function () {
-    score5.removeClass("btn-link");
-    score5.addClass("btn-success");
-    loading();
-    gameOver();
-};
-var score5Lose = function () {
-    score5.removeClass("btn-link");
-    score5.addClass("btn-danger");
-    loading();
-    gameOver();
-};
-
-
 /*    if (currentRound === 1) {
-        roundwin = score1Win;
-        roundloss = score1Lose;
-        round = score1
-    } else if (currentRound === 2) {
-        roundwin = score2Win;
-        roundloss = score2Lose;
-        round = score2
-    } else if (currentRound === 3) {
-        roundwin = score3Win;
-        roundloss = score3Lose;
-        round = score3
-    } else if (currentRound === 4) {
-        roundwin = score4Win;
-        roundloss = score4Lose;
-        round = score4
-    } else if (currentRound === 5) {
-        roundwin = score5Win;
-        roundloss = score5Lose;
-        round = score5
+ roundwin = score1Win;
+ roundloss = score1Lose;
+ round = score1
+ } else if (currentRound === 2) {
+ roundwin = score2Win;
+ roundloss = score2Lose;
+ round = score2
+ } else if (currentRound === 3) {
+ roundwin = score3Win;
+ roundloss = score3Lose;
+ round = score3
+ } else if (currentRound === 4) {
+ roundwin = score4Win;
+ roundloss = score4Lose;
+ round = score4
+ } else if (currentRound === 5) {
+ roundwin = score5Win;
+ roundloss = score5Lose;
+ round = score5
+ }
+ */
+
+var choices = [["Rock", "../img/Rockright.png"], ["Paper", "../img/Paperright.png"], ["Scissors", "../img/Scissorsright.png"]];
+
+
+var compChoose = function() {
+    $('#thinking').attr('style', 'display: none');
+    var aiChoose = Math.floor(Math.random() * 3);
+    makeAIChoice(choices[aiChoose]);
+
+    function makeAIChoice(value) {
+        aiResult = value[0];
+        $('#aiImg').attr('src', value[1]);
     }
-*/
+    /*
+     switch (aiChoose) {
+     case 1:
+     case 2:
+     makeAIChoice("Rock", '../img/Rockright.png');
+     break;
+     case 3:
+     case 4:
+     makeAIChoice("Paper", '../img/Paperright.png');
+     break;
+     case 5:
+     case 6:
+     makeAIChoice("Scissors", '../img/Scissorsright.png');
+     break;
+     }
+     */
+};
+
+var doBattle = function() {
+    if (choice === aiResult) {
+        draw();
+    } else if (rpsObj[choice].beats === aiResult) {
+        roundwin();
+    } else {
+        roundloss();
+    }
+};
+
+/*
+ function doBattle() {
+    switch (choice) {
+        case "Rock":
+            if (aiResult === "Scissors") {
+                roundwin();
+            } else if (aiResult === "Paper") {
+                roundloss();
+            } else {
+            if (currentRound === 5) {
+                gameOverDraw();
+            } else {
+                draw();
+            }
+    }
+ break;
+ case "Paper":
+ if (aiResult === "Scissors") {
+ roundloss();
+ } else if (aiResult === "Paper") {
+ if (currentRound === 5) {
+ gameOverDraw();
+ } else {
+ draw();
+ }
+ } else {
+ roundwin();
+ }
+ break;
+ case "Scissors":
+ if (aiResult === "Scissors") {
+ if (currentRound === 5) {
+ gameOverDraw();
+ } else {
+ draw();
+ }
+ } else if (aiResult === "Paper") {
+ roundwin();
+ } else {
+ roundloss();
+ }
+ break;
+ }
+ }
+ */
+
+
+
+
+
 
 
 /*
@@ -233,39 +232,6 @@ var score5Lose = function () {
  */
 
 
-var gameOver = function() {
-    $('.gameOverDiv').attr('style', 'display: inherit');
-    $('.whole').attr('style', 'display: none');
-
-};
-
-var newGame = function () {
-    $('.gameOverDiv').attr('style', 'display: none');
-    var leaderboardArray = [score1, score2, score3, score4, score5];
-    resetLeaderboard(leaderboardArray);
-    nextRound();
-    currentRound = 1;
-    /*
-    score1.attr('class', '');
-    score1.addClass("btn btn-link");
-    score2.attr('class', '');
-    score2.addClass("btn btn-link");
-    score3.attr('class', '');
-    score3.addClass("btn btn-link");
-    score4.attr('class', '');
-    score4.addClass("btn btn-link");
-    score5.attr('class', '');
-    score5.addClass("btn btn-link");
-    */
-};
-
-function resetLeaderboard(array) {
-    $.each(array, function(i, value) {
-        value.attr('class', '');
-        value.addClass("btn btn-link");
-    });
-}
-
 /*
 var chooseRock = function () {
     $('#youImg').attr('src', '../img/Rockleft.png');
@@ -286,12 +252,14 @@ var chooseScissors = function () {
 };
 */
 
+// ------------
+// UI FUNCTIONS
+// ------------
 
 
 $(function() {
     $('.choiceButtons').on('click', function () {
         choice = $(this).data('choice');
-        console.log($(this).data());
         $('#youImg').attr('src', $(this).data('path'));
         $('#youImg').attr('style', 'visibility: inherit');
         $('#yourChoice').attr('style', 'visibility: inherit');
@@ -299,39 +267,76 @@ $(function() {
 });
 
 
+var gameOver = function() {
+    $('.gameOverDiv').attr('style', 'display: inherit');
+    $('.whole').attr('style', 'display: none');
+
+};
+
+var newGame = function () {
+    $('.gameOverDiv').attr('style', 'display: none');
+    var leaderboardArray = [score1, score2, score3, score4, score5];
+    resetLeaderboard(leaderboardArray);
+    nextRound();
+    currentRound = 1;
+    /*
+     score1.attr('class', '');
+     score1.addClass("btn btn-link");
+     score2.attr('class', '');
+     score2.addClass("btn btn-link");
+     score3.attr('class', '');
+     score3.addClass("btn btn-link");
+     score4.attr('class', '');
+     score4.addClass("btn btn-link");
+     score5.attr('class', '');
+     score5.addClass("btn btn-link");
+     */
+};
+
+
+var draw = function() {
+    if (currentRound === 5) {
+        gameOverDraw();
+    } else {
+        message.html("Draw!");
+        messageDiv.attr('style', 'display: inherit');
+        $('.whole').attr('style', 'display: none');
+        round.removeClass("btn-link");
+        round.addClass("btn-default");
+    }
+};
+var gameOverDraw = function () {
+    $('.whole').attr('style', 'display: none');
+    round.removeClass("btn-link");
+    round.addClass("btn-default");
+    gameOver();
+};
+
+
+var score5Win = function () {
+    score5.removeClass("btn-link");
+    score5.addClass("btn-success");
+    loading();
+    gameOver();
+};
+var score5Lose = function () {
+    score5.removeClass("btn-link");
+    score5.addClass("btn-danger");
+    loading();
+    gameOver();
+};
+
+function resetLeaderboard(array) {
+    $.each(array, function(i, value) {
+        value.attr('class', '');
+        value.addClass("btn btn-link");
+    });
+}
+
 
 var thinking = function() {
    $('#thinking').attr('style', 'display: inherit');
 };
-
-var compChoose = function() {
-    $('#thinking').attr('style', 'display: none');
-    var aiChoose = 3;
-    // Math.floor(Math.random() * 6) + 1;
-    switch (aiChoose) {
-        case 1:
-            makeAIChoice("Rock", '../img/Rockright.png');
-            break;
-        case 2:
-            makeAIChoice("Rock", '../img/Rockright.png');
-            break;
-        case 3, 4:
-            makeAIChoice("Paper", '../img/Paperright.png');
-            break;
-        case 5:
-            makeAIChoice("Scissors", '../img/Scissorsright.png');
-            break;
-        case 6:
-            makeAIChoice("Scissors", '../img/Scissorsright.png');
-            break;
-    }
-};
-
-function makeAIChoice(result, src) {
-    aiResult = result;
-    $('#aiImg').attr('src', src);
-}
-
 
 var win = function () {
     message.html("You Won");
