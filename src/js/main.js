@@ -12,16 +12,42 @@ var aiResult;
 var round;
 
 
-
 var currentRound = 1;
 var choice;
 
+var rpsObj = {
+    "Rock": {
+        "beats": "Scissors"
+    },
+    "Paper": {
+        "beats": "Rock"
+    },
+    "Scissors": {
+        "beats": "Paper"
+    }
+};
+
+var doBattle = function() {
+    if (choice === aiResult) {
+        draw();
+    } else if (rpsObj[choice].beats === aiResult) {
+        roundwin();
+    } else {
+        roundloss();
+    }
+};
+
+
 var draw = function() {
-    message.html("Draw!");
-    messageDiv.attr('style', 'display: inherit');
-    $('.whole').attr('style', 'display: none');
-    round.removeClass("btn-link");
-    round.addClass("btn-default");
+    if (currentRound === 5) {
+        gameOverDraw();
+    } else {
+        message.html("Draw!");
+        messageDiv.attr('style', 'display: inherit');
+        $('.whole').attr('style', 'display: none');
+        round.removeClass("btn-link");
+        round.addClass("btn-default");
+    }
 };
 var gameOverDraw = function () {
     $('.whole').attr('style', 'display: none');
@@ -30,12 +56,12 @@ var gameOverDraw = function () {
     gameOver();
 };
 
-
 var battle = function() {
     thinking();
 
     getRound();
 
+    /*
     function doBattle() {
         switch (choice) {
             case "Rock":
@@ -79,6 +105,7 @@ var battle = function() {
                 break;
         }
     }
+    */
     setTimeout(compChoose, 2000);
     setTimeout(loading, 2000);
     setTimeout(doBattle, 4000);
@@ -86,6 +113,125 @@ var battle = function() {
 
 
 };
+
+var getRound = function() {
+
+    function getRoundDiv(round) {
+        return $('#score' + round);
+    }
+
+    round = getRoundDiv(currentRound);
+
+    if (currentRound !== 5) {
+        function setWin() {
+            round.removeClass("btn-link");
+            round.addClass("btn-success");
+            loading();
+            win();
+        }
+        function setLoss() {
+            round.removeClass("btn-link");
+            round.addClass("btn-danger");
+            loading();
+            lose();
+        }
+        roundwin = setWin;
+        roundloss = setLoss;
+    } else {
+        roundwin = score5Win;
+        roundloss = score5Lose;
+    }
+
+};
+
+var score5Win = function () {
+    score5.removeClass("btn-link");
+    score5.addClass("btn-success");
+    loading();
+    gameOver();
+};
+var score5Lose = function () {
+    score5.removeClass("btn-link");
+    score5.addClass("btn-danger");
+    loading();
+    gameOver();
+};
+
+
+/*    if (currentRound === 1) {
+        roundwin = score1Win;
+        roundloss = score1Lose;
+        round = score1
+    } else if (currentRound === 2) {
+        roundwin = score2Win;
+        roundloss = score2Lose;
+        round = score2
+    } else if (currentRound === 3) {
+        roundwin = score3Win;
+        roundloss = score3Lose;
+        round = score3
+    } else if (currentRound === 4) {
+        roundwin = score4Win;
+        roundloss = score4Lose;
+        round = score4
+    } else if (currentRound === 5) {
+        roundwin = score5Win;
+        roundloss = score5Lose;
+        round = score5
+    }
+*/
+
+
+/*
+ var score1Win = function () {
+ score1.removeClass("btn-link");
+ score1.addClass("btn-success");
+ win();
+ };
+ var score1Lose = function () {
+ score1.removeClass("btn-link");
+ score1.addClass("btn-danger");
+ loading();
+ lose();
+ };
+ var score2Win = function () {
+ score2.removeClass("btn-link");
+ score2.addClass("btn-success");
+ loading();
+ win();
+ };
+ var score2Lose = function () {
+ score2.removeClass("btn-link");
+ score2.addClass("btn-danger");
+ loading();
+ lose();
+ };
+ var score3Win = function () {
+ score3.removeClass("btn-link");
+ score3.addClass("btn-success");
+ loading();
+ win();
+ };
+ var score3Lose = function () {
+ score3.removeClass("btn-link");
+ score3.addClass("btn-danger");
+ loading();
+ lose();
+ };
+ var score4Win = function () {
+ score4.removeClass("btn-link");
+ score4.addClass("btn-success");
+ loading();
+ win();
+ };
+ var score4Lose = function () {
+ score4.removeClass("btn-link");
+ score4.addClass("btn-danger");
+ loading();
+ lose();
+ };
+ */
+
 
 var gameOver = function() {
     $('.gameOverDiv').attr('style', 'display: inherit');
@@ -95,6 +241,11 @@ var gameOver = function() {
 
 var newGame = function () {
     $('.gameOverDiv').attr('style', 'display: none');
+    var leaderboardArray = [score1, score2, score3, score4, score5];
+    resetLeaderboard(leaderboardArray);
+    nextRound();
+    currentRound = 1;
+    /*
     score1.attr('class', '');
     score1.addClass("btn btn-link");
     score2.attr('class', '');
@@ -105,9 +256,15 @@ var newGame = function () {
     score4.addClass("btn btn-link");
     score5.attr('class', '');
     score5.addClass("btn btn-link");
-    nextRound();
-    currentRound = 1;
+    */
 };
+
+function resetLeaderboard(array) {
+    $.each(array, function(i, value) {
+        value.attr('class', '');
+        value.addClass("btn btn-link");
+    });
+}
 
 /*
 var chooseRock = function () {
@@ -134,8 +291,10 @@ var chooseScissors = function () {
 $(function() {
     $('.choiceButtons').on('click', function () {
         choice = $(this).data('choice');
-        $('youImg').attr('src', $(this).data('path'));
+        console.log($(this).data());
+        $('#youImg').attr('src', $(this).data('path'));
         $('#youImg').attr('style', 'visibility: inherit');
+        $('#yourChoice').attr('style', 'visibility: inherit');
     });
 });
 
@@ -147,8 +306,8 @@ var thinking = function() {
 
 var compChoose = function() {
     $('#thinking').attr('style', 'display: none');
-    var aiChoose = "Paper";
-        // Math.floor(Math.random() * 6) + 1;
+    var aiChoose = 3;
+    // Math.floor(Math.random() * 6) + 1;
     switch (aiChoose) {
         case 1:
             makeAIChoice("Rock", '../img/Rockright.png');
@@ -173,29 +332,6 @@ function makeAIChoice(result, src) {
     $('#aiImg').attr('src', src);
 }
 
-var getRound = function() {
-    if (currentRound === 1) {
-        roundwin = score1Win;
-        roundloss = score1Lose;
-        round = score1
-    } else if (currentRound === 2) {
-        roundwin = score2Win;
-        roundloss = score2Lose;
-        round = score2
-    } else if (currentRound === 3) {
-        roundwin = score3Win;
-        roundloss = score3Lose;
-        round = score3
-    } else if (currentRound === 4) {
-        roundwin = score4Win;
-        roundloss = score4Lose;
-        round = score4
-    } else if (currentRound === 5) {
-        roundwin = score5Win;
-        roundloss = score5Lose;
-        round = score5
-    }
-};
 
 var win = function () {
     message.html("You Won");
@@ -213,7 +349,6 @@ var nextRound = function () {
     $('.whole').attr('style', 'display: inherit');
     messageDiv.attr('style', 'display: none');
     $('#spinner').attr('style', 'display: none');
-
     currentRound = currentRound + 1;
     $('#youImg').attr('src', '../img/Rockleft.png');
     $('#yourChoice').attr('style', 'visibility: hidden');
@@ -225,65 +360,7 @@ var loading = function() {
     $('#spinner').attr('style', 'display: inherit')
 };
 
-var score1Win = function () {
-    score1.removeClass("btn-link");
-    score1.addClass("btn-success");
-    win();
-};
-var score1Lose = function () {
-    score1.removeClass("btn-link");
-    score1.addClass("btn-danger");
-    loading();
-    lose();
-};
-var score2Win = function () {
-    score2.removeClass("btn-link");
-    score2.addClass("btn-success");
-    loading();
-    win();
-};
-var score2Lose = function () {
-    score2.removeClass("btn-link");
-    score2.addClass("btn-danger");
-        loading();
-    lose();
-};
-var score3Win = function () {
-    score3.removeClass("btn-link");
-    score3.addClass("btn-success");
-    loading();
-    win();
-};
-var score3Lose = function () {
-    score3.removeClass("btn-link");
-    score3.addClass("btn-danger");
-        loading();
-    lose();
-};
-var score4Win = function () {
-    score4.removeClass("btn-link");
-    score4.addClass("btn-success");
-    loading();
-    win();
-};
-var score4Lose = function () {
-    score4.removeClass("btn-link");
-    score4.addClass("btn-danger");
-        loading();
-    lose();
-};
-var score5Win = function () {
-    score5.removeClass("btn-link");
-    score5.addClass("btn-success");
-    loading();
-    gameOver();
-};
-var score5Lose = function () {
-    score5.removeClass("btn-link");
-    score5.addClass("btn-danger");
-        loading();
-    gameOver();
-};
+
 
 
 
